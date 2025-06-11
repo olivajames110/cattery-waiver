@@ -5,10 +5,10 @@ import {
   RemoveRounded,
   Search,
 } from "@mui/icons-material";
-import { Button, Card, Container, IconButton } from "@mui/material";
+import { Alert, Button, Card, Container, IconButton } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { useState } from "react";
-import { Field, FormSpy } from "react-final-form";
+import { useMemo, useState } from "react";
+import { Field, FormSpy, useFormState } from "react-final-form";
 import RffDateField from "../components/finalForm/inputs/RffDateField";
 import RffSelectToggleField from "../components/finalForm/inputs/RffSelectToggleField";
 import RffSignatureField from "../components/finalForm/inputs/RffSignatureField";
@@ -23,16 +23,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AnimatedCheckmark from "../components/feedback/AnimatedCheckmark/AnimatedCheckMark";
 import Screen from "../components/layout/Screen";
+import { isNil, over, set } from "lodash";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
 
 const CatteryWaiverScreen = ({ children }) => {
+  const init = useMemo(() => {
+    return { adultCount: 0, minorCount: 0 };
+  }, []);
+  const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [initialData, setInitialData] = useState(false);
-  const navigate = useNavigate();
+  const [initialData, setInitialData] = useState(init);
 
+  const handleReset = () => {
+    setSuccess(false);
+    setLoading(false);
+    setError(false);
+    return;
+  };
   // Transform form data into a structure optimized for backend storage and searching
   const transformFormDataForBackend = (formData) => {
     const waiverId = generateWaiverId();
@@ -156,13 +166,6 @@ const CatteryWaiverScreen = ({ children }) => {
     return age;
   };
 
-  const getAdultNameById = (participants, adultId) => {
-    const adult = participants.find(
-      (p) => p.id === adultId && p.type === "adult"
-    );
-    return adult ? adult.fullName : "";
-  };
-
   const submitWaiver = async (data) => {
     const transformedData = transformFormDataForBackend(data);
     console.log("Transformed for backend:", transformedData);
@@ -173,16 +176,15 @@ const CatteryWaiverScreen = ({ children }) => {
       .post(`${API_BASE_URL}/api/waivers/submit`, transformedData)
       .then((res) => {
         setSuccess(true);
-        return res;
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error submitting waiver:", error);
-
-        throw error; // Re-throw to handle it in the calling function if needed
-      })
-      .finally(() => {
         setLoading(false);
+        setError(true);
+        // throw error; // Re-throw to handle it in the calling function if needed
       });
+
     console.log("Response from backend:", response.data);
     return response.data;
   };
@@ -205,31 +207,41 @@ const CatteryWaiverScreen = ({ children }) => {
     );
   }
   return (
-    <>
-      <RffForm
-        className={"required"}
-        success={success}
-        formSpy
-        loading={loading}
-        // initialValues={init}
-        initialValues={initialData}
-        // initialValues={{
-        //   participationType: "Adult(s) Only",
-        //   adultCount: "1",
-        //   minorCount: "0",
-        // }}
-        onSubmit={submitWaiver}
-        formTitle={"Catpurrccinos Cat Cafe General Cattery Waiver"}
-        formDescription="Please provide the required information below for all participants."
-        finalStepLabel="Submit Waiver"
-        sx={{
-          background: "#faf9f5",
-          ".input-wrapper-root.required": {
-            border: "1px solid red",
-          },
-        }}
-      >
-        <Container maxWidth="md" sx={{ px: 2, py: 6 }}>
+    <Screen
+      sx={{
+        background: "#faf9f5",
+        position: "absolute",
+        left: 0,
+        right: 0,
+        height: "100%",
+        width: "100%",
+        overflowY: "auto",
+      }}
+    >
+      <Container maxWidth="md" sx={{ px: 2, py: 6 }}>
+        <RffForm
+          className={"required"}
+          success={success}
+          // formSpy
+          loading={loading}
+          // initialValues={init}
+          initialValues={initialData}
+          // initialValues={{
+          //   participationType: "Adult(s) Only",
+          //   adultCount: "1",
+          //   minorCount: "0",
+          // }}
+          onSubmit={submitWaiver}
+          formTitle={"Catpurrccinos Cat Cafe General Cattery Waiver"}
+          formDescription="Please provide the required information below for all participants."
+          finalStepLabel="Submit Waiver"
+          sx={{
+            // background: "#faf9f5",
+            ".input-wrapper-root.required": {
+              border: "1px solid red",
+            },
+          }}
+        >
           <Flx center sx={{ mb: 2 }}>
             <Button
               variant="outlined"
@@ -239,9 +251,10 @@ const CatteryWaiverScreen = ({ children }) => {
             </Button>
           </Flx>
           <FormQuestions />
-        </Container>
-      </RffForm>
-    </>
+        </RffForm>
+        {error && <Alert severity="error">Could not submit waiver</Alert>}
+      </Container>
+    </Screen>
   );
 };
 
@@ -258,6 +271,7 @@ const FormQuestions = () => {
                     <Flx column gap={4}>
                       <RffSelectToggleField
                         name="participationType"
+                        required
                         label="Who is participating?"
                         options={["Adult(s) Only", "Adult(s) and Minor(s)"]}
                         onChange={(value) => {
@@ -307,15 +321,11 @@ const ParticipantCountSelector = ({
   onAdultCountChange,
   onMinorCountChange,
 }) => {
-  const adultOptions = Array.from({ length: 10 }, (_, i) => ({
-    value: (i + 1).toString(),
-    label: (i + 1).toString(),
-  }));
+  const { values } = useFormState();
 
-  const minorOptions = Array.from({ length: 10 }, (_, i) => ({
-    value: i.toString(),
-    label: i.toString(),
-  }));
+  if (isNil(values?.participationType)) {
+    return;
+  }
 
   return (
     <>
@@ -327,8 +337,8 @@ const ParticipantCountSelector = ({
         // style={{ gap: "20px", alignItems: "center" }}
       >
         {/* Adults Number selcetor */}
-        <Flx gap={6} sx={{ mt: 1 }}>
-          <Flx gap={1} ac>
+        <Flx wrap gap={4} sx={{ mt: 1 }}>
+          <Flx gap={1} ac sx={{ mr: 4 }}>
             <Flx ac g={1.5}>
               <DecrementButton
                 onClick={() =>

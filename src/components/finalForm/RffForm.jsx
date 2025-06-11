@@ -211,7 +211,7 @@ const RffFormFooter = memo(function RffFormFooter({
       }}
     >
       {/* Show validation error message if exists */}
-      {validationErrorMessage && (
+      {/* {validationErrorMessage && (
         <Typography
           color="error"
           sx={{
@@ -222,7 +222,7 @@ const RffFormFooter = memo(function RffFormFooter({
         >
           {validationErrorMessage}
         </Typography>
-      )}
+      )} */}
 
       <Flx
         fw
