@@ -5,7 +5,7 @@ import {
   RemoveRounded,
   Search,
 } from "@mui/icons-material";
-import { Button, Container, IconButton } from "@mui/material";
+import { Button, Card, Container, IconButton } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { Field, FormSpy } from "react-final-form";
@@ -21,12 +21,15 @@ import Txt from "../components/typography/Txt";
 import TitledCard from "../components/ui/TitledCard";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AnimatedCheckmark from "../components/feedback/AnimatedCheckmark/AnimatedCheckMark";
+import Screen from "../components/layout/Screen";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
 
 const CatteryWaiverScreen = ({ children }) => {
   const [success, setSuccess] = useState(false);
+  const [initialData, setInitialData] = useState(false);
   const navigate = useNavigate();
 
   // Transform form data into a structure optimized for backend storage and searching
@@ -178,19 +181,32 @@ const CatteryWaiverScreen = ({ children }) => {
     console.log("Response from backend:", response.data);
     return response.data;
   };
+
+  if (success) {
+    return (
+      <Screen sx={{ background: "#faf9f5" }}>
+        <Container maxWidth="sm" sx={{ px: 2, py: 6 }}>
+          <Card sx={{ py: 6, px: 2, background: "#fff" }}>
+            <Flx column gap={3} center>
+              <AnimatedCheckmark />
+              <Txt sx={{ fontSize: "18px", fontWeight: "bold" }}>
+                Waiver Submitted Successfully!
+              </Txt>
+              <Button onClick={() => setSuccess(false)}>Restart Form</Button>
+            </Flx>
+          </Card>
+        </Container>
+      </Screen>
+    );
+  }
   return (
     <>
-      <Flx center sx={{ p: 2, borderBottom: "1px solid #eee" }}>
-        <Button onClick={() => navigate("/waivers")} endIcon={<Search />}>
-          Go to waiver search
-        </Button>
-      </Flx>
       <RffForm
         className={"required"}
         success={success}
         formSpy
         // initialValues={init}
-        initialValues={generateDummyData()}
+        initialValues={initialData}
         // initialValues={{
         //   participationType: "Adult(s) Only",
         //   adultCount: "1",
@@ -208,6 +224,14 @@ const CatteryWaiverScreen = ({ children }) => {
         }}
       >
         <Container maxWidth="md" sx={{ px: 2, py: 6 }}>
+          <Flx center sx={{ mb: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={() => setInitialData(generateDummyData())}
+            >
+              Randomize Participants
+            </Button>
+          </Flx>
           <FormQuestions />
         </Container>
       </RffForm>
@@ -375,7 +399,7 @@ const AdultSections = ({ count }) => {
           <RffSignatureField
             name={`adult_${i}.signature`}
             label="Signature"
-            // required
+            required
           />
         </RffGroup>
       </TitledCard>
@@ -657,7 +681,7 @@ function generateDummyData(adultCount, minorCount) {
       firstName: getRandomItem(firstNames),
       lastName: getRandomItem(lastNames),
       dateOfBirth: generateRandomDate(0, 17),
-      ...(signingAdult && { signingAdult }),
+      // ...(signingAdult && { signingAdult }),
     };
   }
 

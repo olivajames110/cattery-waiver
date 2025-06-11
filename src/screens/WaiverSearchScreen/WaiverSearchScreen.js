@@ -177,7 +177,7 @@ const WaiverSearchScreen = () => {
   // }, [quickFilter]);
 
   return (
-    <Screen>
+    <Screen sx={{ background: "#faf9f5" }}>
       <TitledHeaderWithSearch
         title={"Waivers"}
         quickFilter={quickFilter}
@@ -199,11 +199,7 @@ const WaiverSearchScreen = () => {
         }
       />
 
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+      {error && <Alert severity="error">{error}</Alert>}
 
       <WaiverPreviewModal
         show={showWaiverModal}
@@ -221,13 +217,15 @@ const WaiverSearchScreen = () => {
           <CircularProgress />
         </div>
       ) : (
-        <WaiverSearchTable
-          ref={ref}
-          rowData={rowData}
-          treeData={treeData}
-          quickFilterText={quickFilter}
-          onRowClick={handleRowClick}
-        />
+        <>
+          <WaiverSearchTable
+            ref={ref}
+            rowData={rowData}
+            treeData={treeData}
+            quickFilterText={quickFilter}
+            onRowClick={handleRowClick}
+          />
+        </>
       )}
     </Screen>
   );
@@ -333,7 +331,7 @@ const WaiverSearchTable = forwardRef(
           field: "signingAdultName",
           filter: true,
           flex: 1,
-          hide: true, // Hide since this info is now shown in hierarchy
+          // hide: true, // Hide since this info is now shown in hierarchy
         },
 
         {
@@ -448,6 +446,7 @@ const WaiverSearchTable = forwardRef(
         resizable: true,
         floatingFilter: false,
         filter: true,
+        minWidth: 140,
       }),
       []
     );
@@ -458,7 +457,13 @@ const WaiverSearchTable = forwardRef(
     }, []);
 
     return (
-      <AgGridTableWrapper noBorderRadius noBorder height={"100%"} size={4}>
+      <AgGridTableWrapper
+        noBorderRadius
+        noBorder
+        //
+        height={"100%"}
+        size={4}
+      >
         <AgGridReact
           ref={ref}
           rowData={transformedRowData}
