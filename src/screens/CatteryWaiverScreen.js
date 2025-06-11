@@ -3,8 +3,9 @@ import {
   EscalatorWarningOutlined,
   Person2Rounded,
   RemoveRounded,
+  Search,
 } from "@mui/icons-material";
-import { Container, IconButton } from "@mui/material";
+import { Button, Container, IconButton } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { Field, FormSpy } from "react-final-form";
@@ -19,6 +20,7 @@ import Flx from "../components/layout/Flx";
 import Txt from "../components/typography/Txt";
 import TitledCard from "../components/ui/TitledCard";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
@@ -175,9 +177,14 @@ const CatteryWaiverScreen = ({ children }) => {
     );
     return adult ? adult.fullName : "";
   };
-
+  const navigate = useNavigate();
   return (
     <>
+      <Flx center sx={{ p: 2, borderBottom: "1px solid #eee" }}>
+        <Button onClick={() => navigate("/waivers")} endIcon={<Search />}>
+          Go to waiver search
+        </Button>
+      </Flx>
       <RffForm
         className={"required"}
         success={success}

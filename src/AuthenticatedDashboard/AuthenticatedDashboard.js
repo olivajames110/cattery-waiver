@@ -9,15 +9,13 @@ import { useMediaQuery } from "@mui/material";
 
 import { isNil } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../_src_shared/DashboardLayout";
 import { useUsersHook } from "../hooks/useUsersHook";
 import { userActionSet } from "../redux/actions/userActions";
 import { usersActionSet } from "../redux/actions/usersActions";
-import WaiverDrilldownScreen from "../screens/WaiverDrilldownScreen/WaiverDrilldownScreen";
-import WaiverSearchScreen from "../screens/WaiverSearchScreen/WaiverSearchScreen";
 
-const AuthenticatedDashboard = (props) => {
+const AuthenticatedDashboard = ({ children }) => {
   const isMobile = useMediaQuery("(max-width:768px)");
   const user = useSelector((state) => state.user);
   const users = useSelector((state) => state.users);
@@ -95,11 +93,7 @@ const AuthenticatedDashboard = (props) => {
 
   return (
     <DashboardLayout topLinks={topLinks} open={open}>
-      <Routes>
-        <Route path={"/waivers"} element={<WaiverSearchScreen />} />
-        <Route path={"/waivers/:id/*"} element={<WaiverDrilldownScreen />} />
-        <Route path="*" element={<Navigate to="/waivers" />} />
-      </Routes>
+      {children}
     </DashboardLayout>
   );
 };

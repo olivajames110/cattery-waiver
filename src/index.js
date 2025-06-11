@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 // Redux + MUI + etc
 import { ThemeProvider } from "@mui/material";
@@ -64,6 +64,7 @@ root.render(
           <Routes>
             {/* Public Routes */}
             {/* <Route path="/login" element={<LoginScreen />} /> */}
+            <Route path="/*" element={<CatteryWaiverScreen />} />
             <Route path="/waiver/*" element={<CatteryWaiverScreen />} />
             <Route path={"/waivers"} element={<WaiverSearchScreen />} />
             <Route path="/authenticate" element={<Authenticate />} />
@@ -73,7 +74,16 @@ root.render(
               path="/*"
               element={
                 <ProtectedRoute>
-                  <AuthenticatedDashboard />
+                  <AuthenticatedDashboard>
+                    <Routes>
+                      <Route
+                        path={"/waivers"}
+                        element={<WaiverSearchScreen />}
+                      />
+                      {/* <Route path={"/waivers/:id/*"} element={<WaiverDrilldownScreen />} /> */}
+                      <Route path="*" element={<Navigate to="/waiver" />} />
+                    </Routes>
+                  </AuthenticatedDashboard>
                 </ProtectedRoute>
               }
             />
