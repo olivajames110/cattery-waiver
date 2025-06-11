@@ -72,8 +72,8 @@ const WaiverSearchScreen = () => {
     console.log("Fetch");
     try {
       // Fixed: Added /waivers to the path
-      // const response = await axios.get(`${API_BASE_URL}/waivers/debug/raw`);
-      const response = await axios.get(`${API_BASE_URL}/waivers/users/all`);
+      // const response = await axios.get(`${API_BASE_URL}/api/waivers/debug/raw`);
+      const response = await axios.get(`${API_BASE_URL}/api/waivers/users/all`);
 
       if (response.data.success) {
         console.log("fetchWaivers => response.data", response.data);
@@ -109,7 +109,9 @@ const WaiverSearchScreen = () => {
 
   const handleRowClick = async (waiverId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/waivers/${waiverId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/waivers/${waiverId}`
+      );
       if (response.data.success) {
         setSelectedWaiver(response.data.data);
         setShowWaiverModal(true);
@@ -130,9 +132,12 @@ const WaiverSearchScreen = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/waivers/users/search`, {
-        params: { query: searchQuery },
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/api/waivers/users/search`,
+        {
+          params: { query: searchQuery },
+        }
+      );
 
       if (response.data.success) {
         const transformedData = response.data.data.map((participant) => ({

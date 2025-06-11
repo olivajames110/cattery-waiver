@@ -27,26 +27,7 @@ const API_BASE_URL =
 
 const CatteryWaiverScreen = ({ children }) => {
   const [success, setSuccess] = useState(false);
-
-  const submitWaiver = async (data) => {
-    const transformedData = transformFormDataForBackend(data);
-    console.log("Transformed for backend:", transformedData);
-
-    // return;
-    const response = await axios
-      .post(`${API_BASE_URL}/waivers/submit`, transformedData)
-      .then((res) => {
-        setSuccess(true);
-        return res;
-      })
-      .catch((error) => {
-        console.error("Error submitting waiver:", error);
-        setSuccess(false);
-        throw error; // Re-throw to handle it in the calling function if needed
-      });
-    console.log("Response from backend:", response.data);
-    return response.data;
-  };
+  const navigate = useNavigate();
 
   // Transform form data into a structure optimized for backend storage and searching
   const transformFormDataForBackend = (formData) => {
@@ -177,7 +158,26 @@ const CatteryWaiverScreen = ({ children }) => {
     );
     return adult ? adult.fullName : "";
   };
-  const navigate = useNavigate();
+
+  const submitWaiver = async (data) => {
+    const transformedData = transformFormDataForBackend(data);
+    console.log("Transformed for backend:", transformedData);
+
+    // return;
+    const response = await axios
+      .post(`${API_BASE_URL}/api/waivers/submit`, transformedData)
+      .then((res) => {
+        setSuccess(true);
+        return res;
+      })
+      .catch((error) => {
+        console.error("Error submitting waiver:", error);
+        setSuccess(false);
+        throw error; // Re-throw to handle it in the calling function if needed
+      });
+    console.log("Response from backend:", response.data);
+    return response.data;
+  };
   return (
     <>
       <Flx center sx={{ p: 2, borderBottom: "1px solid #eee" }}>
