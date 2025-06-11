@@ -29,6 +29,7 @@ const API_BASE_URL =
 
 const CatteryWaiverScreen = ({ children }) => {
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [initialData, setInitialData] = useState(false);
   const navigate = useNavigate();
 
@@ -167,6 +168,7 @@ const CatteryWaiverScreen = ({ children }) => {
     console.log("Transformed for backend:", transformedData);
 
     // return;
+    setLoading(true);
     const response = await axios
       .post(`${API_BASE_URL}/api/waivers/submit`, transformedData)
       .then((res) => {
@@ -175,8 +177,11 @@ const CatteryWaiverScreen = ({ children }) => {
       })
       .catch((error) => {
         console.error("Error submitting waiver:", error);
-        setSuccess(false);
+
         throw error; // Re-throw to handle it in the calling function if needed
+      })
+      .finally(() => {
+        setLoading(false);
       });
     console.log("Response from backend:", response.data);
     return response.data;
@@ -205,6 +210,7 @@ const CatteryWaiverScreen = ({ children }) => {
         className={"required"}
         success={success}
         formSpy
+        loading={loading}
         // initialValues={init}
         initialValues={initialData}
         // initialValues={{
@@ -215,7 +221,7 @@ const CatteryWaiverScreen = ({ children }) => {
         onSubmit={submitWaiver}
         formTitle={"Catpurrccinos Cat Cafe General Cattery Waiver"}
         formDescription="Please provide the required information below for all participants."
-        finalStepLabel="Submit"
+        finalStepLabel="Submit Waiver"
         sx={{
           background: "#faf9f5",
           ".input-wrapper-root.required": {
