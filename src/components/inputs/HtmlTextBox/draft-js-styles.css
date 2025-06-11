@@ -1,0 +1,14 @@
+.rdw-editor-wrapper .rdw-editor-toolbar {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin-bottom: 0;
+  font-family: var(--ibm);
+}
+.rdw-editor-wrapper .rdw-editor-toolbar .rdw-option-wrapper {
+  box-sizing: content-box;
+}
+.rdw-editor-wrapper .rdw-editor-main {
+  overflow-y: auto;
+  padding: 0 10px;
+}/*# sourceMappingURL=draft-js-styles.css.map */

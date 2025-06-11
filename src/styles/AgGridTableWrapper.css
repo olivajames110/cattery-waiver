@@ -1,0 +1,141 @@
+/* 1) Always start with zero min-height to fully shrink when data is present */
+.ag-theme-quartz.custom-ag-table-wrapper.suppress-min-height
+  .ag-center-cols-viewport {
+  min-height: 0 !important;
+}
+
+/**
+ * Simple Table Styles
+ */
+
+.ag-theme-quartz.simple-table {
+  font-size: 12px !important;
+}
+
+.ag-theme-quartz.simple-table .ag-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.ag-theme-quartz.simple-table .ag-row {
+  background-color: transparent;
+  /* background-color: transparent !important; */
+  border-bottom: 1px solid #eeeeee;
+}
+
+.ag-theme-quartz.simple-table .ag-header-cell {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+.ag-theme-quartz.simple-table .ag-cell {
+  font-size: 12px !important;
+}
+
+.ag-theme-quartz.simple-table .ag-root-wrapper {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/**
+ * Border Control Styles
+ */
+
+/* Remove all borders */
+.ag-theme-quartz.no-border .ag-root-wrapper {
+  border: none !important;
+}
+
+/* Remove vertical borders (top and bottom) */
+.ag-theme-quartz.no-border-y .ag-root-wrapper {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+/* Remove horizontal borders (left and right) */
+.ag-theme-quartz.no-border-x .ag-root-wrapper {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* Show only left border */
+.ag-theme-quartz.show-left-border .ag-root-wrapper {
+  border: none !important;
+  border-left: 1px solid var(--ag-border-color) !important;
+}
+
+/* Show only right border */
+.ag-theme-quartz.show-right-border .ag-root-wrapper {
+  border: none !important;
+  border-right: 1px solid var(--ag-border-color) !important;
+}
+
+/* Show only top border */
+.ag-theme-quartz.show-top-border .ag-root-wrapper {
+  border: none !important;
+  border-top: 1px solid var(--ag-border-color) !important;
+}
+
+/* Show only bottom border */
+.ag-theme-quartz.show-bottom-border .ag-root-wrapper {
+  border: none !important;
+  border-bottom: 1px solid var(--ag-border-color) !important;
+}
+
+/* Remove border radius */
+.ag-theme-quartz.no-border-radius .ag-root-wrapper {
+  border-radius: 0 !important;
+}
+
+/* Border radius variants */
+.ag-theme-quartz.border-radius-small .ag-root-wrapper {
+  border-radius: 4px !important;
+}
+
+.ag-theme-quartz.border-radius-medium .ag-root-wrapper {
+  border-radius: 8px !important;
+}
+
+.ag-theme-quartz.border-radius-large .ag-root-wrapper {
+  border-radius: 12px !important;
+}
+
+.ag-theme-quartz.border-radius-xl .ag-root-wrapper {
+  border-radius: 16px !important;
+}
+
+/**
+ * Size Variants (if you want to add size-based styling)
+ */
+
+.ag-theme-quartz.size-1 {
+  font-size: 10px !important;
+}
+
+.ag-theme-quartz.size-2 {
+  font-size: 11px !important;
+}
+
+.ag-theme-quartz.size-3 {
+  font-size: 12px !important;
+}
+
+.ag-theme-quartz.size-4 {
+  font-size: 13px !important;
+}
+
+.ag-theme-quartz.size-5 {
+  font-size: 14px !important;
+}
+
+.ag-theme-quartz.size-6 {
+  font-size: 15px !important;
+}
+
+.ag-theme-quartz.size-7 {
+  font-size: 16px !important;
+}
+
+.ag-theme-quartz.size-8 {
+  font-size: 17px !important;
+}

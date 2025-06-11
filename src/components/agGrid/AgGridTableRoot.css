@@ -1,0 +1,68 @@
+/* Base wrapper class – no universal border is defined here; 
+   your parent or MUI styles might add a default border if needed. */
+
+.custom-ag-table-wrapper {
+  /* You can still define a default border here if you want. 
+         For demonstration, we are leaving it without a default border
+         so we can rely on the classes below. */
+}
+
+/* No border at all */
+.custom-ag-table-wrapper.no-border {
+  border: none !important;
+  --ag-borders: none;
+}
+
+.ag-theme-quartz.custom-ag-table-wrapper.no-border {
+  --ag-borders: none;
+}
+
+/* Show only left border */
+.custom-ag-table-wrapper.left-border {
+  border-left: 1px solid #ddd !important;
+}
+
+/* Show only right border */
+.custom-ag-table-wrapper.right-border {
+  border-right: 1px solid #ddd !important;
+}
+
+/* Show only top border */
+.custom-ag-table-wrapper.top-border {
+  border-top: 1px solid #ddd !important;
+}
+
+/* Show only bottom border */
+.custom-ag-table-wrapper.bottom-border {
+  border-bottom: 1px solid #ddd !important;
+}
+
+/* No border radius (square corners) */
+.custom-ag-table-wrapper.no-border-radius {
+  border-radius: 0 !important;
+}
+
+/* Also ensure internal AG Grid elements have no border radius */
+.custom-ag-table-wrapper.no-border-radius .ag-root,
+.custom-ag-table-wrapper.no-border-radius .ag-header,
+.custom-ag-table-wrapper.no-border-radius .ag-header-container,
+.custom-ag-table-wrapper.no-border-radius .ag-floating-top,
+.custom-ag-table-wrapper.no-border-radius .ag-floating-bottom,
+.custom-ag-table-wrapper.no-border-radius .ag-cell,
+.custom-ag-table-wrapper.no-border-radius .ag-theme-quartz {
+  border-radius: 0 !important;
+}
+
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius .ag-root-wrapper,
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius .ag-header,
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius .ag-body-viewport,
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius
+  .ag-pinned-left-header,
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius
+  .ag-pinned-left-cols-container,
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius
+  .ag-pinned-right-header,
+.ag-theme-quartz.custom-ag-table-wrapper.no-border-radius
+  .ag-pinned-right-cols-container {
+  border-radius: 0 !important;
+}

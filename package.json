@@ -1,0 +1,77 @@
+{
+  "name": "external-forms",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@draft-js-plugins/editor": "^4.1.4",
+    "@draft-js-plugins/mention": "^5.3.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.0",
+    "@mui/material": "^6.4.0",
+    "@mui/x-date-pickers": "^7.24.0",
+    "@react-email/components": "^0.0.33",
+    "@reduxjs/toolkit": "^2.6.0",
+    "@stytch/react": "^19.4.0",
+    "@stytch/vanilla-js": "^5.18.4",
+    "ag-charts-community": "^11.0.0",
+    "ag-charts-enterprise": "^11.0.0",
+    "ag-charts-react": "^11.0.0",
+    "ag-grid-community": "^33.0.0",
+    "ag-grid-enterprise": "^33.0.0",
+    "ag-grid-react": "^33.0.0",
+    "axios": "^1.8.1",
+    "azure-maps-control": "^3.6.0",
+    "cra-template": "1.2.0",
+    "date-fns": "^2.29.3",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
+    "final-form-arrays": "^3.1.0",
+    "html-react-parser": "^5.2.2",
+    "html-to-draftjs": "^1.5.0",
+    "imask": "^7.6.1",
+    "lodash": "^4.17.21",
+    "notistack": "^3.0.2",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-draft-wysiwyg": "^1.15.0",
+    "react-final-form": "^6.5.9",
+    "react-final-form-arrays": "^3.1.4",
+    "react-imask": "^7.6.1",
+    "react-number-format": "^5.4.3",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.2.0",
+    "react-scripts": "5.0.1",
+    "react-signature-canvas": "^1.1.0-alpha.1",
+    "react18-json-view": "^0.2.9-canary.9",
+    "redux": "^5.0.1",
+    "stytch": "^12.7.0",
+    "use-local-storage": "^3.0.0",
+    "use-local-storage-state": "^19.5.0",
+    "uuid": "^11.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

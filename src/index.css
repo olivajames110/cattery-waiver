@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+/* body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+} */
+
+:root {
+  --titleColor: #062e6f; /* #33475b; */
+  /* --titleColor: #2b2266; */
+  /* --primaryFont: "Inter", serif, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+    Cantarell, "Helvetica Neue", sans-serif; */
+  --inter: "Inter", serif;
+  --ibm: "IBM Plex Sans", sans-serif;
+  --lora: "Lora", serif;
+  --bs: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
+  /* --bg: #f5f5f5; */
+  /* --bg: #fafafb; */
+  /* Yah */
+  --bg: #f2f5f7;
+  --primaryColor: #2962ff;
+  --primaryFont: var(--ibm);
+}
+
+svg.thin {
+  stroke-width: 0.6px;
+  stroke: #ffffff;
+}
+
+svg.thin-1 {
+  stroke-width: 0.1px;
+  stroke: #ffffff;
+}
+svg.thin-2 {
+  stroke-width: 0.2px;
+  stroke: #ffffff;
+}
+svg.thin-3 {
+  stroke-width: 0.3px;
+  stroke: #ffffff;
+}
+svg.thin-4 {
+  stroke-width: 0.4px;
+  stroke: #ffffff;
+}
+svg.thin-5 {
+  stroke-width: 0.5px;
+  stroke: #ffffff;
+}
+svg.thin-6 {
+  stroke-width: 0.6px;
+  stroke: #ffffff;
+}
+svg.thin-7 {
+  stroke-width: 0.7px;
+  stroke: #ffffff;
+}
+svg.thin-8 {
+  stroke-width: 0.8px;
+  stroke: #ffffff;
+}
+svg.thin-9 {
+  stroke-width: 0.9px;
+  stroke: #ffffff;
+}
+svg.thin-10 {
+  stroke-width: 1px;
+  stroke: #ffffff;
+}

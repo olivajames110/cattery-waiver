@@ -1,0 +1,16 @@
+export const selectOptionsLoanStatus = [
+  "Prospect",
+  "Terms Accepted",
+  "Processing",
+  "Appraisal Ordered",
+  "Appraisal In",
+  "Underwriting",
+  "Final Review",
+  "Clear To Close",
+  "Closed",
+  "Closed w/ Post Closing Conditions",
+  "Balance Sheet",
+  "Loan Sold",
+  "Inactive",
+  "Dead",
+];

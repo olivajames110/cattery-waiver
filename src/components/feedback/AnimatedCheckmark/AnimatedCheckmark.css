@@ -1,0 +1,87 @@
+.animated-checkmark {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animated-checkmark .path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+}
+
+.animated-checkmark .path.circle {
+  animation: dash 0.9s ease-in-out;
+}
+
+.animated-checkmark .path.line {
+  stroke-dashoffset: 1000;
+  animation: dash 0.9s 0.35s ease-in-out forwards;
+}
+
+.animated-checkmark .path.check {
+  stroke-dashoffset: -100;
+  animation: dash-check 0.9s 0.35s ease-in-out forwards;
+}
+
+.inlinesvg .svg svg {
+  display: inline;
+}
+
+.icon--order-success svg polyline {
+  animation: checkmark 0.25s ease-in-out 0.7s backwards;
+}
+
+.icon--order-success svg circle {
+  animation: checkmark-circle 0.6s ease-in-out backwards;
+}
+
+.icon--order-success svg circle#colored {
+  animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes dash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+.animation-ctn {
+  text-align: center;
+  margin-top: 5em;
+}
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100px;
+  }
+  100% {
+    stroke-dashoffset: 0px;
+  }
+}
+@keyframes checkmark-circle {
+  0% {
+    stroke-dashoffset: 480px;
+  }
+  100% {
+    stroke-dashoffset: 960px;
+  }
+}
+@keyframes colored-circle {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
