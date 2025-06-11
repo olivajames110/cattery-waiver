@@ -8,8 +8,6 @@ import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 
 // === Stytch B2B imports ===
-import { StytchB2BProvider } from "@stytch/react/b2b";
-import { StytchB2BUIClient } from "@stytch/vanilla-js/b2b";
 
 // Your own modules
 import AuthenticatedDashboard from "./AuthenticatedDashboard";
@@ -39,21 +37,19 @@ const store = configureStore({
 
 // Determine which public token to use
 const isProduction = process.env.NODE_ENV === "production";
-// const stytchPublicToken = process.env.REACT_APP_STYTCH_PUBLIC_TEST_TOKEN;
-const stytchPublicToken = process.env.REACT_APP_STYTCH_PUBLIC_LIVE_TOKEN;
 
-const stytchOptions = {
-  cookieOptions: {
-    opaqueTokenCookieName: "stytch_session",
-    jwtCookieName: "stytch_session_jwt",
-    path: "",
-    availableToSubdomains: false,
-    domain: "",
-  },
-};
+// const stytchOptions = {
+//   cookieOptions: {
+//     opaqueTokenCookieName: "stytch_session",
+//     jwtCookieName: "stytch_session_jwt",
+//     path: "",
+//     availableToSubdomains: false,
+//     domain: "",
+//   },
+// };
 
 // Create the B2B client
-const stytchB2BClient = new StytchB2BUIClient(stytchPublicToken, stytchOptions);
+// const stytchB2BClient = new StytchB2BUIClient(stytchPublicToken, stytchOptions);
 
 const primaryColor = "#2962ff";
 // MUI-themed wrapper
@@ -61,31 +57,58 @@ const primaryColor = "#2962ff";
 // Mount the app
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <StytchB2BProvider stytch={stytchB2BClient}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <SnackbarProvider maxSnack={5}>
-          <ThemeProvider theme={generateMuiThemeDefaults({ primaryColor })}>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/login" element={<LoginScreen />} />
-              <Route path="/waiver/*" element={<CatteryWaiverScreen />} />
-              <Route path={"/waivers"} element={<WaiverSearchScreen />} />
-              <Route path="/authenticate" element={<Authenticate />} />
+  <Provider store={store}>
+    <BrowserRouter>
+      <SnackbarProvider maxSnack={5}>
+        <ThemeProvider theme={generateMuiThemeDefaults({ primaryColor })}>
+          <Routes>
+            {/* Public Routes */}
+            {/* <Route path="/login" element={<LoginScreen />} /> */}
+            <Route path="/waiver/*" element={<CatteryWaiverScreen />} />
+            <Route path={"/waivers"} element={<WaiverSearchScreen />} />
+            <Route path="/authenticate" element={<Authenticate />} />
 
-              {/* Private/Protected Routes */}
-              <Route
-                path="/*"
-                element={
-                  <ProtectedRoute>
-                    <AuthenticatedDashboard />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </ThemeProvider>
-        </SnackbarProvider>
-      </BrowserRouter>
-    </Provider>
-  </StytchB2BProvider>
+            {/* Private/Protected Routes */}
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <AuthenticatedDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </ThemeProvider>
+      </SnackbarProvider>
+    </BrowserRouter>
+  </Provider>
 );
+// root.render(
+//   <StytchB2BProvider stytch={stytchB2BClient}>
+//     <Provider store={store}>
+//       <BrowserRouter>
+//         <SnackbarProvider maxSnack={5}>
+//           <ThemeProvider theme={generateMuiThemeDefaults({ primaryColor })}>
+//             <Routes>
+//               {/* Public Routes */}
+//               <Route path="/login" element={<LoginScreen />} />
+//               <Route path="/waiver/*" element={<CatteryWaiverScreen />} />
+//               <Route path={"/waivers"} element={<WaiverSearchScreen />} />
+//               <Route path="/authenticate" element={<Authenticate />} />
+
+//               {/* Private/Protected Routes */}
+//               <Route
+//                 path="/*"
+//                 element={
+//                   <ProtectedRoute>
+//                     <AuthenticatedDashboard />
+//                   </ProtectedRoute>
+//                 }
+//               />
+//             </Routes>
+//           </ThemeProvider>
+//         </SnackbarProvider>
+//       </BrowserRouter>
+//     </Provider>
+//   </StytchB2BProvider>
+// );

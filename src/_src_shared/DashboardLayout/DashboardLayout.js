@@ -110,11 +110,6 @@ const DashboardLayout = ({
           }}
         >
           <LinksRenderer open={open} links={topLinks} />
-          <LinksRenderer open={open} links={bottomLinks}>
-            {/* <LinkListGroup collapsed={!open}>
-              <NavLinkLogoutButton collapsed={!open} />
-            </LinkListGroup> */}
-          </LinksRenderer>
         </Box>
       </NavRenderer>
       <DashboardMain>{children}</DashboardMain>

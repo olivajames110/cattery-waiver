@@ -1,27 +1,15 @@
 // import { useStytchB2BClient } from "@stytch/react/dist/StytchB2BContext-865b6947";
 import axios from "axios";
 import { isArray, isBoolean, isEmpty } from "lodash";
-import { enqueueSnackbar, SnackbarContent, useSnackbar } from "notistack";
-import { forwardRef, useCallback, useState } from "react";
-import { getValueFromMappedObject } from "../utils/objects/getValueFromMappedObject";
-import { useStytchB2BClient } from "@stytch/react/b2b";
-import { Box, IconButton, Typography } from "@mui/material";
-import {
-  CheckCircle,
-  CheckRounded,
-  CloseRounded,
-  Error,
-  ErrorOutline,
-  ReportProblemRounded,
-} from "@mui/icons-material";
-import Txt from "../components/typography/Txt";
-import { grey, red } from "@mui/material/colors";
+import { useSnackbar } from "notistack";
+import { useCallback, useState } from "react";
 import CustomSnackbar from "../_src_shared/components/CustomSnackbar";
+import { getValueFromMappedObject } from "../utils/objects/getValueFromMappedObject";
 export const useAxiosHook = () => {
-  const stytch = useStytchB2BClient();
-  const tokens = stytch.session.getTokens();
+  // const stytch = useStytchB2BClient();
+  // const tokens = stytch.session.getTokens();
   // console.log("tokens", tokens);
-  const session_token = tokens?.session_token;
+  // const session_token = tokens?.session_token;
   // const session_token = tokens?.session_jwt;
   // Exported State
   const [axiosPostIsLoading, setAxiosPostIsLoading] = useState(false);
@@ -30,8 +18,7 @@ export const useAxiosHook = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   // Map to your domain(s)
   const domainTypeMap = {
-    default:
-      "https://rtl-backend.ambitioussmoke-43b0762d.eastus.azurecontainerapps.io",
+    default: "https://cattery-waiver-backend.onrender.com/",
 
     errorTesting: "https://example.azurewebsites.net",
   };
@@ -74,9 +61,9 @@ export const useAxiosHook = () => {
       axios({
         url: `${getValueFromMappedObject(domainTypeMap, type)}/${path}`,
         method: "get",
-        headers: {
-          Authorization: `Bearer ${session_token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${session_token}`,
+        // },
         responseType: effectiveResponseType,
         cancelToken: cancelSource?.token,
       })
@@ -190,7 +177,7 @@ export const useAxiosHook = () => {
           setAxiosGetIsLoading(false);
         });
     },
-    [session_token]
+    []
   );
 
   // -----------------------------------------
@@ -231,7 +218,7 @@ export const useAxiosHook = () => {
         // 2. Prepare the data & headers for the request
         let dataToSend = payload;
         const finalHeaders = {
-          Authorization: `Bearer ${session_token}`,
+          // Authorization: `Bearer ${session_token}`,
           ...headers,
         };
 
@@ -389,7 +376,7 @@ export const useAxiosHook = () => {
         setAxiosPostIsLoading(false);
       }
     },
-    [session_token]
+    []
   );
 
   return {
