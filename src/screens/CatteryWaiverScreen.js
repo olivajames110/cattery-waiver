@@ -27,6 +27,7 @@ import { isNil, over, set } from "lodash";
 import TextOverflow from "../_src_shared/components/TextOverflow";
 import Htag from "../components/typography/Htag";
 import Logo from "../components/Logo";
+import RffDateAdultField from "../components/finalForm/inputs/RffDateAdultField";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
@@ -191,8 +192,9 @@ const CatteryWaiverScreen = ({ children }) => {
         // throw error; // Re-throw to handle it in the calling function if needed
       });
 
-    console.log("Response from backend:", response.data);
-    return response.data;
+    console.log("Response from backend:", response?.data);
+    return;
+    // return response.data;
   };
 
   if (success) {
@@ -573,7 +575,7 @@ const AdultSections = ({ count }) => {
             size={4}
             required
           />
-          <RffDateField
+          <RffDateAdultField
             name={`adult_${i}.dateOfBirth`}
             label="Date of Birth"
             size={4}
@@ -654,7 +656,7 @@ const MinorSections = ({ count, adultCount }) => {
                 size={4}
                 required
               />
-              <RffDateField
+              <RffDateAdultField
                 name={`minor_${i}.dateOfBirth`}
                 label="Date of Birth"
                 size={4}

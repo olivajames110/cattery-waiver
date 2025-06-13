@@ -38,11 +38,7 @@ import BasicModal from "../../components/modals/BasicModal";
 import { sideBarColumnsFilters } from "../../utils/agGrid/sideBar/sideBarColumnsFilters";
 import { useNavigate } from "react-router-dom";
 
-ModuleRegistry.registerModules([
-  IntegratedChartsModule.with(AgChartsEnterpriseModule),
-  ContextMenuModule,
-  ClipboardModule,
-]);
+// ModuleRegistry.registerModules([ContextMenuModule, ClipboardModule]);
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
@@ -115,50 +111,6 @@ const WaiverSearchScreen = () => {
       }
     } catch (err) {
       setError("Error fetching waiver details: " + err.message);
-    }
-  };
-
-  // Search functionality
-  const searchWaivers = async (searchQuery) => {
-    if (!searchQuery) {
-      fetchWaivers();
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/api/waivers/users/search`,
-        {
-          params: { query: searchQuery },
-        }
-      );
-
-      if (response.data.success) {
-        const transformedData = response.data.data.map((participant) => ({
-          id: participant.id,
-          waiverId: participant.lastWaiverId,
-          name: participant.fullName,
-          firstName: participant.firstName,
-          lastName: participant.lastName,
-          dateOfBirth: participant.dateOfBirth,
-          dateSigned: participant.lastSigned,
-          signingAdult: "",
-          participantType: participant.type,
-          age: participant.age,
-          matchedOn: participant.matchedOn,
-        }));
-
-        setRowData(transformedData);
-      } else {
-        setError("Failed to search waivers");
-      }
-    } catch (err) {
-      setError("Error searching waivers: " + err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
