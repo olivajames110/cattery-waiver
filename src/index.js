@@ -68,12 +68,7 @@ const AppRoutes = ({ children }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Flx column center gap={1} sx={{ p: 2, borderBottom: "1px solid #eee" }}>
-        <Box
-          component="img"
-          src="https://oneclickrescue.blob.core.windows.net/5009/images/items/image5088.png"
-          sx={{ height: 50 }}
-        />
+      {/* <Flx column center gap={1} sx={{ p: 2, borderBottom: "1px solid #eee" }}>
         <Flx center gap={1}>
           <Button
             onClick={() => navigate("/waiver")}
@@ -85,7 +80,7 @@ const AppRoutes = ({ children }) => {
             Go To Waiver Search
           </Button>
         </Flx>
-      </Flx>
+      </Flx> */}
       <Routes>
         <Route path="/*" element={<CatteryWaiverScreen />} />
         <Route path="/waiver/*" element={<CatteryWaiverScreen />} />

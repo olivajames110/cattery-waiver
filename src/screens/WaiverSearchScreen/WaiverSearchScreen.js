@@ -1,4 +1,27 @@
 import {
+  AccountTreeOutlined,
+  ListOutlined,
+  PeopleOutline,
+} from "@mui/icons-material";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+import { amber, yellow } from "@mui/material/colors";
+import { AgChartsEnterpriseModule } from "ag-charts-enterprise";
+import { ModuleRegistry } from "ag-grid-community";
+import {
+  ClipboardModule,
+  ContextMenuModule,
+  IntegratedChartsModule,
+} from "ag-grid-enterprise";
+import { AgGridReact } from "ag-grid-react";
+import axios from "axios";
+import { isString } from "lodash";
+import {
   forwardRef,
   useCallback,
   useEffect,
@@ -6,40 +29,14 @@ import {
   useRef,
   useState,
 } from "react";
-import {
-  Button,
-  FormLabel,
-  CircularProgress,
-  Alert,
-  ToggleButtonGroup,
-  ToggleButton,
-} from "@mui/material";
-import { isNil, isString, set } from "lodash";
-import TextInput from "../../components/inputs/TextInput";
-import Screen from "../../components/layout/Screen";
-import TitledHeaderWithSearch from "../../components/layout/TitledHeaderWithSearch";
-import BasicModal from "../../components/modals/BasicModal";
-import { AgGridReact } from "ag-grid-react";
 import { columnTypesBoolean } from "../../_src_shared/utils/agGrid/columnTypes/columnTypesBoolean";
 import { columnTypesDate } from "../../_src_shared/utils/agGrid/columnTypes/columnTypesDate";
 import AgGridTableWrapper from "../../components/agGrid/AgGridTableWrapper";
+import Screen from "../../components/layout/Screen";
+import TitledHeaderWithSearch from "../../components/layout/TitledHeaderWithSearch";
+import BasicModal from "../../components/modals/BasicModal";
 import { sideBarColumnsFilters } from "../../utils/agGrid/sideBar/sideBarColumnsFilters";
-import axios from "axios";
-import { ModuleRegistry } from "ag-grid-community";
-import {
-  ClipboardModule,
-  ContextMenuModule,
-  IntegratedChartsModule,
-} from "ag-grid-enterprise";
-import { AgChartsEnterpriseModule } from "ag-charts-enterprise";
-import { amber, yellow } from "@mui/material/colors";
-import { agApiSizeColumnsToFit } from "../../_src_shared/utils/agGrid/api/agApiSizeColumnsToFit";
-import ToggleTabSwitcher from "../../components/navigation/ToggleTabSwitcher";
-import {
-  AccountTreeOutlined,
-  ListOutlined,
-  TextureOutlined,
-} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 ModuleRegistry.registerModules([
   IntegratedChartsModule.with(AgChartsEnterpriseModule),
@@ -175,27 +172,33 @@ const WaiverSearchScreen = () => {
 
   //   return () => clearTimeout(delayDebounceFn);
   // }, [quickFilter]);
-
+  const navigate = useNavigate();
   return (
     <Screen sx={{ background: "#faf9f5" }}>
       <TitledHeaderWithSearch
-        title={"Waivers"}
+        // title={"Waivers"}
         quickFilter={quickFilter}
         setQuickFilter={setQuickFilter}
         endContent={
-          <ToggleButtonGroup
-            value={treeData}
-            exclusive
-            onChange={(e, nv) => setTreeData(nv)}
-            aria-label="text alignment"
+          // <ToggleButtonGroup
+          //   value={treeData}
+          //   exclusive
+          //   onChange={(e, nv) => setTreeData(nv)}
+          //   aria-label="text alignment"
+          // >
+          //   <ToggleButton value={false} aria-label="left aligned">
+          //     <ListOutlined />
+          //   </ToggleButton>
+          //   <ToggleButton value={true} aria-label="centered">
+          //     <AccountTreeOutlined className="thin" />
+          //   </ToggleButton>
+          // </ToggleButtonGroup>
+          <Button
+            onClick={() => navigate("/waiver")}
+            endIcon={<PeopleOutline />}
           >
-            <ToggleButton value={false} aria-label="left aligned">
-              <ListOutlined />
-            </ToggleButton>
-            <ToggleButton value={true} aria-label="centered">
-              <AccountTreeOutlined className="thin" />
-            </ToggleButton>
-          </ToggleButtonGroup>
+            Waiver Form
+          </Button>
         }
       />
 

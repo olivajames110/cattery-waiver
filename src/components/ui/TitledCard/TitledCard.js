@@ -57,7 +57,9 @@ const TitledCard = ({
   const cardRootStyles = useMemo(
     () => ({
       flexGrow: grow ? 1 : 0,
-      p: 0,
+      // p: 0,
+      p: 1,
+      pt: 0.4,
       overflow: "hidden",
       // overflow: "unset",
       ...(fw && { width: "100%" }),

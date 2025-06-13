@@ -6,7 +6,7 @@ import {
   Search,
 } from "@mui/icons-material";
 import { Alert, Button, Card, Container, IconButton } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { amber, grey } from "@mui/material/colors";
 import { useMemo, useState } from "react";
 import { Field, FormSpy, useFormState } from "react-final-form";
 import RffDateField from "../components/finalForm/inputs/RffDateField";
@@ -24,11 +24,15 @@ import { useNavigate } from "react-router-dom";
 import AnimatedCheckmark from "../components/feedback/AnimatedCheckmark/AnimatedCheckMark";
 import Screen from "../components/layout/Screen";
 import { isNil, over, set } from "lodash";
+import TextOverflow from "../_src_shared/components/TextOverflow";
+import Htag from "../components/typography/Htag";
+import Logo from "../components/Logo";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
 
 const CatteryWaiverScreen = ({ children }) => {
+  const navigate = useNavigate();
   const init = useMemo(() => {
     return { adultCount: 0, minorCount: 0 };
   }, []);
@@ -218,7 +222,7 @@ const CatteryWaiverScreen = ({ children }) => {
         overflowY: "auto",
       }}
     >
-      <Container maxWidth="md" sx={{ px: 2, py: 6 }}>
+      <Container maxWidth="md" sx={{ px: 2, pt: 4, pb: 12 }}>
         <RffForm
           className={"required"}
           success={success}
@@ -242,13 +246,54 @@ const CatteryWaiverScreen = ({ children }) => {
             },
           }}
         >
-          <Flx center sx={{ mb: 2 }}>
-            <Button
-              variant="outlined"
-              onClick={() => setInitialData(generateDummyData())}
-            >
-              Randomize Participants
-            </Button>
+          <Flx column gap={2} sx={{ mb: 4 }}>
+            <Flx fw wrap jb ac gap={2}>
+              <Flx ac wrap gap={2}>
+                <Logo height={84} />
+                <Flx column gap={1}>
+                  <Htag>General Cattery Waiver</Htag>
+                  <Htag h3>General Cattery Waiver</Htag>
+                </Flx>
+              </Flx>
+              <Flx ac gap={1}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setInitialData(generateDummyData())}
+                >
+                  Randomize Participants
+                </Button>
+                <Button
+                  onClick={() => navigate("/waivers")}
+                  endIcon={<Search />}
+                >
+                  Waiver Search
+                </Button>
+              </Flx>
+            </Flx>
+            <TextOverflow maxHeight="200px">
+              <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text Waiver Text
+                Waiver Text Waiver Text Waiver Text Waiver Text
+              </Txt>
+            </TextOverflow>
           </Flx>
           <FormQuestions />
         </RffForm>
@@ -472,6 +517,7 @@ const MinorSections = ({ count, adultCount }) => {
           <TitledCard
             icon={<EscalatorWarningOutlined className="thin" />}
             title={`Minor ${i + 1}`}
+            cardSx={{ borderLeft: `8px solid ${amber[100]}` }}
           >
             <RffGroup suppressBottomMargin>
               <RffTextField

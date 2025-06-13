@@ -12,6 +12,7 @@ const TextOverflow = ({ children, maxHeight = "280px" }) => {
         maxHeight: maxHeight,
         overflowY: "auto",
         p: 2,
+        background: "#fff",
         border: `1px solid ${grey[300]}`,
         borderRadius: "4px",
       }}
