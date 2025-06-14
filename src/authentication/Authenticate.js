@@ -1,6 +1,6 @@
 import { useStytchMemberSession } from "@stytch/react/b2b";
 import { Navigate } from "react-router-dom";
-import CatteryWaiverScreen from "../screens/CatteryWaiverScreen";
+import WaiverFormScreen from "../screens/WaiverFormScreen";
 
 const Authenticate = () => {
   const { session } = useStytchMemberSession();
@@ -11,7 +11,7 @@ const Authenticate = () => {
   }
 
   // return <AuthenticateError />;
-  return <CatteryWaiverScreen />;
+  return <WaiverFormScreen />;
   // return <LoginScreen />;
 };
 

@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 // Redux + MUI + etc
-import { Box, Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { configureStore } from "@reduxjs/toolkit";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
@@ -21,15 +21,12 @@ import ProtectedRoute from "./authentication/ProtectedRoute";
 import generateMuiThemeDefaults from "./functions/generateMuiThemeDefaults";
 import "./index.css";
 import rootReducer from "./redux/reducers";
-import LoginScreen from "./screens/LoginScreen";
 
 // AG Grid
 import { LicenseManager } from "ag-grid-enterprise";
 import Authenticate from "./authentication/Authenticate";
-import CatteryWaiverScreen from "./screens/CatteryWaiverScreen";
+import WaiverFormScreen from "./screens/WaiverFormScreen";
 import WaiverSearchScreen from "./screens/WaiverSearchScreen";
-import Flx from "./components/layout/Flx";
-import { PeopleOutline, Search } from "@mui/icons-material";
 LicenseManager.setLicenseKey(process.env.REACT_APP_AG_GRID_ENTERPRISE_KEY);
 
 // Create Redux store
@@ -82,8 +79,8 @@ const AppRoutes = ({ children }) => {
         </Flx>
       </Flx> */}
       <Routes>
-        <Route path="/*" element={<CatteryWaiverScreen />} />
-        <Route path="/waiver/*" element={<CatteryWaiverScreen />} />
+        <Route path="/*" element={<WaiverFormScreen />} />
+        <Route path="/waiver/*" element={<WaiverFormScreen />} />
         <Route path="/waivers" element={<WaiverSearchScreen />} />
         <Route path="/authenticate" element={<Authenticate />} />
 
@@ -127,7 +124,7 @@ root.render(
 //             <Routes>
 //               {/* Public Routes */}
 //               <Route path="/login" element={<LoginScreen />} />
-//               <Route path="/waiver/*" element={<CatteryWaiverScreen />} />
+//               <Route path="/waiver/*" element={<WaiverFormScreen />} />
 //               <Route path={"/waivers"} element={<WaiverSearchScreen />} />
 //               <Route path="/authenticate" element={<Authenticate />} />
 

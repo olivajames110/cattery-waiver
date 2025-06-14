@@ -7,9 +7,14 @@ import {
 } from "@mui/icons-material";
 import { Alert, Button, Card, Container, IconButton } from "@mui/material";
 import { amber, grey } from "@mui/material/colors";
+import axios from "axios";
+import { isNil } from "lodash";
 import { useMemo, useState } from "react";
 import { Field, FormSpy, useFormState } from "react-final-form";
-import RffDateField from "../components/finalForm/inputs/RffDateField";
+import { useNavigate } from "react-router-dom";
+import TextOverflow from "../_src_shared/components/TextOverflow";
+import AnimatedCheckmark from "../components/feedback/AnimatedCheckmark/AnimatedCheckMark";
+import RffDateAdultField from "../components/finalForm/inputs/RffDateAdultField";
 import RffSelectToggleField from "../components/finalForm/inputs/RffSelectToggleField";
 import RffSignatureField from "../components/finalForm/inputs/RffSignatureField";
 import RffTextField from "../components/finalForm/inputs/RffTextField";
@@ -17,22 +22,16 @@ import RffForm from "../components/finalForm/RffForm";
 import RffGroup from "../components/finalForm/shared/RffGroup";
 import InputWrapper from "../components/inputs/shared/InputWrapper";
 import Flx from "../components/layout/Flx";
+import Screen from "../components/layout/Screen";
+import Logo from "../components/Logo";
+import Htag from "../components/typography/Htag";
 import Txt from "../components/typography/Txt";
 import TitledCard from "../components/ui/TitledCard";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import AnimatedCheckmark from "../components/feedback/AnimatedCheckmark/AnimatedCheckMark";
-import Screen from "../components/layout/Screen";
-import { isNil, over, set } from "lodash";
-import TextOverflow from "../_src_shared/components/TextOverflow";
-import Htag from "../components/typography/Htag";
-import Logo from "../components/Logo";
-import RffDateAdultField from "../components/finalForm/inputs/RffDateAdultField";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_URL || "http://localhost:3001/api";
 
-const CatteryWaiverScreen = ({ children }) => {
+const WaiverFormScreen = ({ children }) => {
   const navigate = useNavigate();
   const init = useMemo(() => {
     return { adultCount: 0, minorCount: 0 };
@@ -66,7 +65,7 @@ const CatteryWaiverScreen = ({ children }) => {
           type: "adult",
           firstName: adult.firstName,
           lastName: adult.lastName,
-          fullName: `${adult.lastName}, ${adult.firstName}`,
+          fullName: `${adult.firstName} ${adult.lastName}`,
           dateOfBirth: adult.dateOfBirth,
           signature: adult.signature,
           age: calculateAge(adult.dateOfBirth),
@@ -886,4 +885,4 @@ function generateDummyData(adultCount, minorCount) {
 
 // console.log("\nAdults only (4 adults, 0 minors):");
 // console.log(generateDummyData(4, 0));
-export default CatteryWaiverScreen;
+export default WaiverFormScreen;
