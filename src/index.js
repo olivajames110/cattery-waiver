@@ -49,7 +49,7 @@ root.render(
             <Route path="/waivers" element={<WaiverSearchScreen />} />
 
             {/* Catch all route */}
-            {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ThemeProvider>
       </SnackbarProvider>
