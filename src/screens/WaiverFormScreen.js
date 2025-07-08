@@ -3,12 +3,13 @@ import {
   EscalatorWarningOutlined,
   Person2Rounded,
   RemoveRounded,
+  RestartAlt,
   Search,
 } from "@mui/icons-material";
-import { Alert, Button, Card, Container, IconButton } from "@mui/material";
-import { amber, grey } from "@mui/material/colors";
+import { Alert, Box, Button, Card, Container, IconButton } from "@mui/material";
+import { amber, grey, yellow } from "@mui/material/colors";
 import axios from "axios";
-import { isNil } from "lodash";
+import { isNil, over } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { Field, FormSpy, useFormState } from "react-final-form";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +28,8 @@ import Logo from "../components/Logo";
 import Htag from "../components/typography/Htag";
 import Txt from "../components/typography/Txt";
 import TitledCard from "../components/ui/TitledCard";
+import RffDateField from "../components/finalForm/inputs/RffDateField";
+import { formatDateShort } from "../utils/dates/formatDateShort";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
@@ -181,6 +184,7 @@ const WaiverFormScreen = ({ children }) => {
   const generateWaiverId = () => {
     return `W${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   };
+
   const calculateAge = (dateOfBirth) => {
     if (!dateOfBirth) return null;
     const today = new Date();
@@ -205,7 +209,8 @@ const WaiverFormScreen = ({ children }) => {
     const response = await axios
       .post(`${API_BASE_URL}/api/waivers/submit`, transformedData)
       .then((res) => {
-        setSuccess(true);
+        setSuccess(transformedData);
+        // setSuccess(true);
         setLoading(false);
       })
       .catch((error) => {
@@ -220,17 +225,128 @@ const WaiverFormScreen = ({ children }) => {
     // return response.data;
   };
 
+  const pe = {
+    waiverId: "W1751979962908_7a06c9hos",
+    submissionDate: "2025-07-08T13:06:02.908Z",
+    participationType: "Adult(s) and Minor(s)",
+    totalParticipants: 2,
+    adultCount: 1,
+    minorCount: 1,
+    participants: [
+      {
+        id: "W1751979962908_7a06c9hos_adult_0",
+        type: "adult",
+        firstName: "Test4",
+        lastName: "Test4",
+        fullName: "Test4 Test4",
+        dateOfBirth: "1993-10-10T04:00:00.000Z",
+        signature:
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLEAAADSCAYAAAC1kFKzAAAAAXNSR0IArs4c6QAAHpdJREFUeF7t3bGrLdd1B+BlcCFICpVpgvy6lGqCUwQkdUmn/0B6f0Fw6UoSOF0guEgZntQHkjKdLBKIi0BSGmKwHqhw4UJFAioMzlnO2fZkdO49M+fsM7Nm5hu43Kv75uy95tv7Cd6Pvfd8J1wECBAgQIAAAQIECBAgQIAAAQIEigt8p3h9yiNAgAABAgQIECBAgAABAgQIECAQQiyTgAABAgQIECBAgAABAgQIECBAoLyAEKv8ECmQAAECBAgQIECAAAECBAgQIEBAiGUOECBAgAABAgQIECBAgAABAgQIlBcQYpUfIgUSIECAAAECBAgQIECAAAECBAgIscwBAgQIECBAgAABAgQIECBAgACB8gJCrPJDpEACBAgQIECAAAECBAgQIECAAAEhljlAgAABAgQIECBAgAABAgQIECBQXkCIVX6IFEiAAAECBAgQIECAAAECBAgQICDEMgcIECBAgAABAgQIECBAgAABAgTKCwixyg+RAgkQIECAAAECBAgQIECAAAECBIRY5gABAgQIECBAgAABAgQIECBAgEB5ASFW+SFSIAECBAgQIECAAAECBAgQIECAgBDLHCBAgAABAgQIECBAgAABAgQIECgvIMQqP0QKJECAAAECBAgQIECAAAECBAgQEGKZAwQIECBAgAABAgQIECBAgAABAuUFhFjlh0iBBAgQIECAAAECBAgQIECAAAECQixzgAABAgQIECBAgAABAgQIECBAoLyAEKv8ECmQAAECBAgQIECAAAECBAgQIEBAiGUOECBAgAABAgQIECBAgAABAgQIlBcQYpUfIgUSIECAAAECBAgQIECAAAECBAgIscwBAgQIECBAgAABAgQIECBAgACB8gJCrPJDpEACBAgQIECAAAECBAgQIECAAAEhljlAgAABAgQIECBAgAABAgQIECBQXkCIVX6IFEiAAAECBAgQIECAAAECBAgQICDEMgcIECBAgAABAgQIECBAgAABAgTKCwixyg+RAgkQIECAAAECBAgQIECAAAECBIRY5gABAgQIECBAgAABAgQIECBAgEB5ASFW+SFSIAECBAgQIECAAAECBAgQIECAgBDLHCBAgAABAgQIECBAgAABAgQIECgvIMQqP0QKJECAAAECBAgQIECAAAECBAgQEGKZAwQIECBAgAABAgQIECBAgAABAuUFhFjlh0iBBAgQIECAAAECBAgQIECAAAECQixzgAABAgQIECBAgAABAgQIECBAoLyAEKv8ECmQAAECBAgQIECAAAECBAgQIEBAiGUOECBAgAABAgQIECBAgAABAgQIlBcQYpUfIgUSIECAAAECBAgQIECAAAECBAgIscwBAgQIECBAgAABAgQIECBAgACB8gJCrPJDpEACBAgQIECAAAECBAgQIECAAAEhljlAgAABAgQIECBAgAABAgQIECBQXkCIVX6IFEiAAAECBAgQIECAAAECBAgQICDEMgcIECBAgAABAgQIECBAgAABAgTKCwixyg+RAgkQIECAAAECBAgQIECAAAECBIRY5gABAgQIECBAgAABAgQIECBAgEB5ASFW+SFSIAECBAgQIECAAAECBAgQIECAgBDLHCBAgAABAgQIECBAgAABAgQIECgvIMQqP0QKJECAAAECBAgQIECAAAECBAgQEGKZAwQIECBAgAABAgQIECBAgAABAuUFhFjlh0iBBAgQIECAAAECBAgQIECAAAECQixzgAABAgQIECBAgAABAgQIECBAoLyAEKv8ECmQAAECBAgQIECAAAECBAgQIEBAiGUOECBAgAABAgQIECBAgAABAgQIlBcQYpUfIgUSIECAAAECBAgQIECAAAECBAgIscwBAgQIECBAgAABAgQIECBAgACB8gJCrPJDpEACBAgQIECAAAECBAgQIECAAAEhljlAgAABAgQIECBAgAABAgQIECBQXkCIVX6IFEiAAAECBAgQIECAAAECBAgQICDEMgcIECBAgAABAgQIECBAgAABAgTKCwixyg+RAgkQIECAAAECBAgQIECAAAECBIRY5gABAgQIECBAgAABAgQIECBAgEB5ASFW+SFSIAECBAgQIECAAAECBAgQIECAgBDLHCBAgAABAgQIECBAgAABAgQIECgvIMQqP0QKJECAAAECBAgQIECAAAECBAgQEGKZAwQIECBAgAABAgQIECBAgAABAuUFhFjlh0iBBAgQIECAAAECBAgQIECAAAECQixzgAABAgQIECBAgAABAgQIECBAoLyAEKv8ECmQAAECBAgQIECAAAECBAgQIEBAiGUOECBAgAABAgQIECBAgAABAgQIlBcQYpUfIgUSIECAAAECBAgQIECAAAECBAgIscwBAgQIECBAgAABAgQIECBAgACB8gJCrPJDpEACBAgQIECAAAECBAgQIECAAAEhljlAgAABAgQIECBAgAABAgQIECBQXkCIVX6IFEiAAAECBAgQIECAAAECBAgQICDEMgcIECBAgAABAgQIECBAgAABAgTKCwixyg+RAgkQIECAAAECBAgQIECAAAECBIRY5gABAgQIECBAgAABAgQIECBAgEB5ASFW+SFSIAECBAgQIECAAAECBAgQIECAgBDLHCBAgAABAgQIECBAgAABAgQIECgvIMQqP0QKJECAAAECBAgQIECAAAECBAgQEGKZAwQIECBAgAABAgQIECBAgAABAuUFhFjlh0iBBAgQIECAAAECBAgQIECAAAECQixzgAABAgQIECBAgAABAgQIECBAoLyAEKv8ECmQQBeB751bye/t5y8jon3l7/Ln9r1LpxohQIAAAQIECBAgQIAAAQK9BIRYvSS1Q6CWwLsR8RcR8f2IyJ/nXF9HRH59GhGvz+HWT+Y04F4CBAgQIECAAAECBAgQINBbQIjVW1R7BJYTaKuq3jl3mWHV3MDqlmpzxVZebeVWBlwvb2nIZwgQIECAAAECBAgQIECAwFQBIdZUKfcRqCGQwdUH57BqicBq6lN/HBGfTL3ZfQQIECBAgAABAgQIECBAYK6AEGuumPsJrCPw0Wnl04eD86zWqeLpXnProdVY1UZFPQQIECBAgAABAgQIENiRgBBrR4PpUXYn0FZd5Sqn6td7p9Vhzs2qPkrqI0CAAAECBAgQIECAwIYFhFgbHjyllxRob/7LrX5vnSsc/m5YdPt9/q6dM5W/+2VE/OH569aH/HVEfDci2vdb2xl/Lg98z6sd/v7mObz64vz7XJHlDYe9tLVDgAABAgQIECBAgAABAr8TEGKZDARuExiHVRlatYPWb2txX5/KVVnp8XcR8QcR0UKu4aHw+3piT0OAAAECBAgQIECAAAECDxUQYj2UV+M7EWjb+l6fD1WfG1a14KZxjIOct8+BT65qmnL9d0T8e0R8ExE/PX/gf85hUf5n1pmrwC59b28UzPuGq7/y5+Gf5Z8PV4rlf7eVZcMD5a8dLj9eCdb6aP2171lrruJyESBAgAABAgQIECBAgACBiwJCLBODwO8FMrRpocw75y1z75//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AQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLCDE6gyqOQIECBAgQIAAAQIECBAgQIAAgf4CQqz+plokQIAAAQIECBAgQIAAAQIECBDoLPC/KNsy8Z0ZruIAAAAASUVORK5CYII=",
+        age: 31,
+        isSigningAdult: true,
+        minorsSignedFor: [
+          {
+            id: "W1751979962908_7a06c9hos_minor_0",
+            name: "Emma asd",
+          },
+        ],
+      },
+      {
+        id: "W1751979962908_7a06c9hos_minor_0",
+        type: "minor",
+        firstName: "Emma",
+        lastName: "asd",
+        fullName: "asd, Emma",
+        dateOfBirth: "2025-03-12T04:00:00.000Z",
+        age: 0,
+        signingAdultId: "W1751979962908_7a06c9hos_adult_0",
+        signingAdultName: "Test4 Test4",
+      },
+    ],
+    searchIndexes: {
+      names: ["test4 test4", "asd, emma"],
+      firstNames: ["test4", "emma"],
+      lastNames: ["test4", "asd"],
+      allParticipants: [
+        {
+          id: "W1751979962908_7a06c9hos_adult_0",
+          name: "Test4 Test4",
+          type: "adult",
+          age: 31,
+        },
+        {
+          id: "W1751979962908_7a06c9hos_minor_0",
+          name: "asd, Emma",
+          type: "minor",
+          age: 0,
+        },
+      ],
+    },
+    waiverSummary: {
+      id: "W1751979962908_7a06c9hos",
+      dateSubmitted: "2025-07-08",
+      participantNames: "Test4 Test4, asd, Emma",
+      participantCount: 2,
+      hasMinors: true,
+      signingAdults: ["Test4 Test4"],
+    },
+  };
+
   if (success) {
     return (
-      <Screen sx={{ background: "#faf9f5" }}>
-        <Container maxWidth="sm" sx={{ px: 2, py: 6 }}>
-          <Card sx={{ py: 6, px: 2, background: "#fff" }}>
+      <Screen
+        sx={{
+          background: "#faf9f5",
+          // px: 2,
+          //
+          py: 2,
+          height: "100%",
+          overflowY: "auto",
+        }}
+      >
+        <Container
+          maxWidth="sm"
+          //
+          sx={{}}
+        >
+          <Card sx={{ py: 6, px: 3, background: "#fff" }}>
             <Flx column gap={3} center>
-              <AnimatedCheckmark />
-              <Txt sx={{ fontSize: "18px", fontWeight: "bold" }}>
-                Waiver Submitted Successfully!
-              </Txt>
-              <Button onClick={handleReset}>Restart Form</Button>
+              <Flx column ac gap={2}>
+                <Logo height={100} />
+              </Flx>
+              <Flx column gap={0.5} center>
+                <Txt sx={{ fontSize: "18px", fontWeight: "bold" }}>
+                  Waiver Submitted Successfully!
+                </Txt>
+                <Txt center secondary>
+                  Upon arrival, please present this waiver to a staff member —
+                  or give us your name and we’ll look it up for you. We look
+                  forward to your visit!
+                </Txt>
+              </Flx>
+              <AnimatedCheckmark size={60} />
+              <Flx fw column gap={1} sx={{ mt: 4 }}>
+                <Flx fw jb ac wrap>
+                  <Htag h3 sx={{ fontWeight: "bold" }}>
+                    Participant Details:
+                  </Htag>
+                  <Flx gap={0.5} ac wrap>
+                    <Htag h3 sx={{ fontWeight: 600 }}>
+                      Submitted:
+                    </Htag>
+                    <Txt>{formatDateShort(pe?.submissionDate)}</Txt>
+                  </Flx>
+                </Flx>
+                <SubmissionOverview payload={pe} />
+              </Flx>
+              {/* <SubmissionOverview payload={success}/> */}
+              <Button
+                size="large"
+                startIcon={<RestartAlt />}
+                onClick={handleReset}
+              >
+                Restart Form
+              </Button>
             </Flx>
           </Card>
         </Container>
@@ -457,6 +573,91 @@ const WaiverFormScreen = ({ children }) => {
         {error && <Alert severity="error">Could not submit waiver</Alert>}
       </Container>
     </Screen>
+  );
+};
+
+const SubmissionOverview = ({ payload }) => {
+  return (
+    <Flx column gap={1}>
+      {/* <Flx fw jb ac wrap>
+          <Htag h3 sx={{ fontWeight: "bold" }}>
+            Participant Details:
+          </Htag>
+          <Flx gap={0.5} ac wrap>
+            <Htag h3 sx={{ fontWeight: 600 }}>
+              Submitted on:
+            </Htag>
+            <Txt>{formatDateShort(payload?.submissionDate)}</Txt>
+          </Flx>
+        </Flx> */}
+      {payload?.participants?.map((p) => {
+        return (
+          <Flx
+            key={p.id}
+            gap={1}
+            ac
+            wrap
+            sx={{
+              border: "1px solid #ccc",
+              p: 1,
+              borderRadius: "4px",
+              background: p?.type === "adult" ? "#ffffff" : yellow[50],
+            }}
+          >
+            <Txt sx={{ fontWeight: "bold" }}>
+              {p.type === "adult" ? "Adult" : "Minor"}:
+            </Txt>
+            <Txt>{`${p?.firstName} ${p?.lastName}`}</Txt>
+          </Flx>
+        );
+      })}
+    </Flx>
+  );
+  return (
+    <Box
+      sx={{
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        p: 2,
+        mb: 4,
+        width: "100%",
+      }}
+    >
+      <Flx column gap={1}>
+        {/* <Flx fw jb ac wrap>
+          <Htag h3 sx={{ fontWeight: "bold" }}>
+            Participant Details:
+          </Htag>
+          <Flx gap={0.5} ac wrap>
+            <Htag h3 sx={{ fontWeight: 600 }}>
+              Submitted on:
+            </Htag>
+            <Txt>{formatDateShort(payload?.submissionDate)}</Txt>
+          </Flx>
+        </Flx> */}
+        {payload?.participants?.map((p) => {
+          return (
+            <Flx
+              key={p.id}
+              gap={1}
+              ac
+              wrap
+              sx={{
+                border: "1px solid #ccc",
+                p: 1,
+                borderRadius: "4px",
+                background: p?.type === "adult" ? "#ffffff" : yellow[50],
+              }}
+            >
+              <Txt sx={{ fontWeight: "bold" }}>
+                {p.type === "adult" ? "Adult" : "Minor"}:
+              </Txt>
+              <Txt>{`${p?.firstName} ${p?.lastName}`}</Txt>
+            </Flx>
+          );
+        })}
+      </Flx>
+    </Box>
   );
 };
 
@@ -697,7 +898,7 @@ const MinorSections = ({ count, adultCount }) => {
                 size={4}
                 required
               />
-              <RffDateAdultField
+              <RffDateField
                 name={`minor_${i}.dateOfBirth`}
                 label="Date of Birth"
                 size={4}
