@@ -392,10 +392,14 @@ const WaiverFormScreen = ({ children }) => {
           <Flx column gap={2} sx={{ mb: 4 }}>
             <Flx fw wrap jb ac gap={2}>
               <Flx ac wrap gap={2}>
-                <Logo height={84} />
-                <Flx column gap={1}>
-                  <Htag>General Cattery Waiver</Htag>
-                  <Htag h3>General Cattery Waiver</Htag>
+                <Logo height={72} />
+                <Flx column gap={0.5}>
+                  <Htag sx={{ fontSize: "18px" }}>
+                    Catpurrccinos Cattery Waiver
+                  </Htag>
+                  <Txt secondary sx={{ fontWeight: 400 }}>
+                    Release agreement and visitor information
+                  </Txt>
                 </Flx>
               </Flx>
               {/* <Flx ac gap={1}>
@@ -414,7 +418,7 @@ const WaiverFormScreen = ({ children }) => {
               </Flx> */}
             </Flx>
             <Flx column sx={{ mt: 4 }} gap={1}>
-              <Htag h2>
+              <Htag h2 sx={{ lineHeight: 1.4 }}>
                 Waiver, release, hold harmless and indemnification agreement
               </Htag>
               <TextOverflow maxHeight="180px">
