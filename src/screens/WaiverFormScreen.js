@@ -9,7 +9,7 @@ import { Alert, Button, Card, Container, IconButton } from "@mui/material";
 import { amber, grey } from "@mui/material/colors";
 import axios from "axios";
 import { isNil } from "lodash";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Field, FormSpy, useFormState } from "react-final-form";
 import { useNavigate } from "react-router-dom";
 import TextOverflow from "../_src_shared/components/TextOverflow";
@@ -28,8 +28,7 @@ import Htag from "../components/typography/Htag";
 import Txt from "../components/typography/Txt";
 import TitledCard from "../components/ui/TitledCard";
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:3001/api";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const WaiverFormScreen = ({ children }) => {
   const navigate = useNavigate();
@@ -41,12 +40,37 @@ const WaiverFormScreen = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [initialData, setInitialData] = useState(init);
 
+  const wakeUpServer = async () => {
+    try {
+      console.log("Waking up server...");
+
+      // const response = await axios.get(`${API_BASE_URL}/api/waivers/wake-up`, {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/waivers/wake-up-with-db`,
+        {
+          timeout: 30000, // 30 second timeout
+        }
+      );
+
+      console.log("Server wake-up successful:", response.status);
+      return true;
+    } catch (error) {
+      console.log("Server wake-up request completed:", error.message);
+      // Don't treat this as a real error since the goal is just to wake up the server
+      return false;
+    }
+  };
+
+  // Add useEffect to wake up server when component mounts
+  useEffect(() => {
+    wakeUpServer();
+  }, []);
+
   const handleReset = () => {
     setSuccess(false);
     setLoading(false);
     setError(false);
     setInitialData(init);
-    // Optionally reset the form state if needed
     return;
   };
   // Transform form data into a structure optimized for backend storage and searching
@@ -258,7 +282,7 @@ const WaiverFormScreen = ({ children }) => {
                   <Htag h3>General Cattery Waiver</Htag>
                 </Flx>
               </Flx>
-              <Flx ac gap={1}>
+              {/* <Flx ac gap={1}>
                 <Button
                   variant="outlined"
                   onClick={() => setInitialData(generateDummyData())}
@@ -271,152 +295,162 @@ const WaiverFormScreen = ({ children }) => {
                 >
                   Waiver Search
                 </Button>
-              </Flx>
+              </Flx> */}
             </Flx>
-            <TextOverflow maxHeight="200px">
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I hereby certify that I am over eighteen (18) years of age, and
-                am of sound mind at the time of the execution of this Waiver,
-                Release, Hold Harmless, and Indemnification Agreement
-                (hereinafter “Release”) and agree to the terms and conditions of
-                this document. If I am agreeing to this waiver on behalf of a
-                minor I agree that references throughout to “I” or “me” apply to
-                myself and the minor. I am aware that my signature acknowledging
-                all agreements is valid from date of signature, up to and
-                including any and all future entries to Catpurrccinos Cat Café.
-              </Txt>
+            <Flx column sx={{ mt: 4 }} gap={1}>
+              <Htag h2>
+                Waiver, release, hold harmless and indemnification agreement
+              </Htag>
+              <TextOverflow maxHeight="180px">
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I hereby certify that I am over eighteen (18) years of age,
+                  and am of sound mind at the time of the execution of this
+                  Waiver, Release, Hold Harmless, and Indemnification Agreement
+                  (hereinafter “Release”) and agree to the terms and conditions
+                  of this document. If I am agreeing to this waiver on behalf of
+                  a minor I agree that references throughout to “I” or “me”
+                  apply to myself and the minor. I am aware that my signature
+                  acknowledging all agreements is valid from date of signature,
+                  up to and including any and all future entries to
+                  Catpurrccinos Cat Café.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                Catpurrccinos Cat Café has available certain cats and/or kittens
-                to be played with by customers at the establishment and agrees
-                to allow me to play with same in consideration of both the
-                payment of the fees for same and my execution of this Release
-                and agreeing to be bound by its terms.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  Catpurrccinos Cat Café has available certain cats and/or
+                  kittens to be played with by customers at the establishment
+                  and agrees to allow me to play with same in consideration of
+                  both the payment of the fees for same and my execution of this
+                  Release and agreeing to be bound by its terms.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I am aware of and fully understand the inherent dangers involved
-                in playing with cats and/or kittens, including the risk of death
-                and/or personal injury or damage to myself, other persons, my
-                property, and/or the property of others while participating in
-                such activities or having my property at the site of such
-                activities. I further acknowledge that participants in such
-                activities and other person involved in these activities may not
-                be covered under insurance of Catpurrccinos and that customers
-                of Catpurrccinos may not have any right to file a claim against
-                Catpurrccinos insurance policy.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I am aware of and fully understand the inherent dangers
+                  involved in playing with cats and/or kittens, including the
+                  risk of death and/or personal injury or damage to myself,
+                  other persons, my property, and/or the property of others
+                  while participating in such activities or having my property
+                  at the site of such activities. I further acknowledge that
+                  participants in such activities and other person involved in
+                  these activities may not be covered under insurance of
+                  Catpurrccinos and that customers of Catpurrccinos may not have
+                  any right to file a claim against Catpurrccinos insurance
+                  policy.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I freely and voluntarily execute this Release with such
-                knowledge, and assume full and sole responsibility for the risk
-                of death, personal injury and/or property loss arising from or
-                in any way connected with my participation in the activities
-                provided by Catpurrccinos.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I freely and voluntarily execute this Release with such
+                  knowledge, and assume full and sole responsibility for the
+                  risk of death, personal injury and/or property loss arising
+                  from or in any way connected with my participation in the
+                  activities provided by Catpurrccinos.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I agree to abide by all rules and regulations that Catpurrccinos
-                may impose regarding the cats and/or kittens. I agree to follow
-                all rules and to undertake all activities in a responsible
-                manner. IF I AM UNWILLING OR UNABLE TO FOLLOW ANY RULES,
-                CATPURRCCINOS WILL TERMINATE MY CONTINUATION OF SUCH ACTIVITIES,
-                AND I WILL NOT BE ENTITLED TO ANY REFUND OF OUR FEES.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I agree to abide by all rules and regulations that
+                  Catpurrccinos may impose regarding the cats and/or kittens. I
+                  agree to follow all rules and to undertake all activities in a
+                  responsible manner. IF I AM UNWILLING OR UNABLE TO FOLLOW ANY
+                  RULES, CATPURRCCINOS WILL TERMINATE MY CONTINUATION OF SUCH
+                  ACTIVITIES, AND I WILL NOT BE ENTITLED TO ANY REFUND OF OUR
+                  FEES.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I acknowledge that playing with cats and/or kittens may not be
-                supervised, and Catpurrccinos staff will not be with me the
-                entire time I am in contact with the cats and/or kittens, but
-                Catpurrccinos staff will remain on the premises to monitor the
-                activity of all current participants, offer guidance and
-                encouragement, and be available to assist in the event of
-                participant difficulty.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I acknowledge that playing with cats and/or kittens may not be
+                  supervised, and Catpurrccinos staff will not be with me the
+                  entire time I am in contact with the cats and/or kittens, but
+                  Catpurrccinos staff will remain on the premises to monitor the
+                  activity of all current participants, offer guidance and
+                  encouragement, and be available to assist in the event of
+                  participant difficulty.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I have no physical or emotional issue(s), including, but not
-                limited to, any allergies, which would adversely affect my
-                ability to play with the cats and/or kittens in a safe and
-                appropriate manner.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I have no physical or emotional issue(s), including, but not
+                  limited to, any allergies, which would adversely affect my
+                  ability to play with the cats and/or kittens in a safe and
+                  appropriate manner.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I agree not to engage in any activity that will injure or
-                otherwise hurt the cats and/or kittens in any manner.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I agree not to engage in any activity that will injure or
+                  otherwise hurt the cats and/or kittens in any manner.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I hereby release and forever discharge Catpurrccinos, their
-                respective agents, owners, employees, and independent
-                contractors, and their respective sureties, insurers,
-                successors, assigns, and legal representatives, from any
-                liability, claim, cause of action, demand and damages for
-                injury, death or damages of any kind or nature whatsoever to
-                myself or my property as a result of my engaging in any
-                activities at Catpurrccinos, including, but not limited to,
-                playing with the cats and/or kittens, whether such injury,
-                death, or property damage is caused by the intentional or
-                negligent act or omission on the part of (i) any other customer
-                of Catpurrccinos, (ii) any employee, agent, owners, or
-                independent contractor of Catpurrccinos, or (iii) any other
-                person at Catpurrccinos. Furthermore, I agree to pay any and all
-                attorney’s fees and costs of the Catpurrccinos, their respective
-                agents, employees, owners, and independent contractors if I
-                bring any action, claim, or demand against Catpurrccinos, or any
-                of their respective agents, employees, owners and independent
-                contractors for any reason for which this Release applies.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I hereby release and forever discharge Catpurrccinos, their
+                  respective agents, owners, employees, and independent
+                  contractors, and their respective sureties, insurers,
+                  successors, assigns, and legal representatives, from any
+                  liability, claim, cause of action, demand and damages for
+                  injury, death or damages of any kind or nature whatsoever to
+                  myself or my property as a result of my engaging in any
+                  activities at Catpurrccinos, including, but not limited to,
+                  playing with the cats and/or kittens, whether such injury,
+                  death, or property damage is caused by the intentional or
+                  negligent act or omission on the part of (i) any other
+                  customer of Catpurrccinos, (ii) any employee, agent, owners,
+                  or independent contractor of Catpurrccinos, or (iii) any other
+                  person at Catpurrccinos. Furthermore, I agree to pay any and
+                  all attorney’s fees and costs of the Catpurrccinos, their
+                  respective agents, employees, owners, and independent
+                  contractors if I bring any action, claim, or demand against
+                  Catpurrccinos, or any of their respective agents, employees,
+                  owners and independent contractors for any reason for which
+                  this Release applies.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I agree to defend with counsel chosen by the indemnified party,
-                indemnify, and hold harmless Catpurrccinos, their respective
-                agents, employees, owners, and independent contractors, their
-                sureties, insurers, successors, assigns, and legal
-                representatives from any liability, claim, cause of action,
-                demand or damages for injury, death or damages of any kind or
-                nature whatsoever to any person or their property resulting from
-                any actual or claimed intentional or wrongful act or omission by
-                me arising from or as a result of my presence at Catpurrccinos
-                or my participation in any activities at Catpurrccinos. I agree
-                to provide said defense and indemnity regardless of the merit of
-                the claim.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I agree to defend with counsel chosen by the indemnified
+                  party, indemnify, and hold harmless Catpurrccinos, their
+                  respective agents, employees, owners, and independent
+                  contractors, their sureties, insurers, successors, assigns,
+                  and legal representatives from any liability, claim, cause of
+                  action, demand or damages for injury, death or damages of any
+                  kind or nature whatsoever to any person or their property
+                  resulting from any actual or claimed intentional or wrongful
+                  act or omission by me arising from or as a result of my
+                  presence at Catpurrccinos or my participation in any
+                  activities at Catpurrccinos. I agree to provide said defense
+                  and indemnity regardless of the merit of the claim.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I agree to and hereby bind my heirs, executors, assigns and all
-                other legal representatives by executing this Release.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I agree to and hereby bind my heirs, executors, assigns and
+                  all other legal representatives by executing this Release.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                I hereby acknowledge and agree that this Release is intended to
-                be construed and interpreted as broad and inclusive as permitted
-                by the laws of Huntington, NY. If any portion of this Release is
-                found or declared to be invalid or unenforceable, such
-                invalidity shall not affect the remainder of this Release not
-                found to be invalid and the remainder of this Release shall
-                remain in full force and effect. This Agreement shall be
-                governed by the laws of Huntington, NY (without regard to the
-                laws that might be applicable under principles of conflicts of
-                law, and without regard to the jurisdiction in which any action
-                or special proceedings may be instituted), as to all matters,
-                including but not limited to matters of jurisdiction, validity,
-                property rights, construction, effect and performance. All
-                disputes shall be subject to litigation only within the courts
-                of Huntington, NY.
-              </Txt>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  I hereby acknowledge and agree that this Release is intended
+                  to be construed and interpreted as broad and inclusive as
+                  permitted by the laws of Huntington, NY. If any portion of
+                  this Release is found or declared to be invalid or
+                  unenforceable, such invalidity shall not affect the remainder
+                  of this Release not found to be invalid and the remainder of
+                  this Release shall remain in full force and effect. This
+                  Agreement shall be governed by the laws of Huntington, NY
+                  (without regard to the laws that might be applicable under
+                  principles of conflicts of law, and without regard to the
+                  jurisdiction in which any action or special proceedings may be
+                  instituted), as to all matters, including but not limited to
+                  matters of jurisdiction, validity, property rights,
+                  construction, effect and performance. All disputes shall be
+                  subject to litigation only within the courts of Huntington,
+                  NY.
+                </Txt>
 
-              <Txt sx={{ fontSize: "16px", mb: 2 }}>
-                BY EXECUTING THIS RELEASE, I ACKNOWLEDGE THAT I HAVE READ THIS
-                RELEASE, UNDERSTAND THE CONTENTS HEREOF, HAVE BEEN ADVISED AND
-                HAD THE OPPORTUNITY TO SEEK INDEPENDENT COUNSEL OF MY CHOICE AND
-                CERTIFY THAT I HAVE FREELY AND VOLUNTARILY EXECUTED THIS
-                RELEASE. I ACKNOWLEDGE THAT, BUT FOR THE EXECUTION OF THIS
-                RELEASE AND AGREEING TO BE BOUND BY THE TERMS HEREOF,
-                CATPURRCCINOS WOULD NOT AUTHORIZE ME TO PARTICIPATE IN ANY
-                ACTIVITIES AT CATPURRCCINOS.
-              </Txt>
-            </TextOverflow>
+                <Txt sx={{ fontSize: "16px", mb: 2 }}>
+                  BY EXECUTING THIS RELEASE, I ACKNOWLEDGE THAT I HAVE READ THIS
+                  RELEASE, UNDERSTAND THE CONTENTS HEREOF, HAVE BEEN ADVISED AND
+                  HAD THE OPPORTUNITY TO SEEK INDEPENDENT COUNSEL OF MY CHOICE
+                  AND CERTIFY THAT I HAVE FREELY AND VOLUNTARILY EXECUTED THIS
+                  RELEASE. I ACKNOWLEDGE THAT, BUT FOR THE EXECUTION OF THIS
+                  RELEASE AND AGREEING TO BE BOUND BY THE TERMS HEREOF,
+                  CATPURRCCINOS WOULD NOT AUTHORIZE ME TO PARTICIPATE IN ANY
+                  ACTIVITIES AT CATPURRCCINOS.
+                </Txt>
+              </TextOverflow>
+            </Flx>
           </Flx>
           <FormQuestions />
         </RffForm>
@@ -435,30 +469,36 @@ const FormQuestions = () => {
             <Field name="minorCount">
               {({ input: minorCountInput }) => (
                 <>
-                  <TitledCard title={"Participation Details"}>
-                    <Flx column gap={4}>
-                      <RffSelectToggleField
-                        name="participationType"
-                        required
-                        label="Who is participating?"
-                        options={["Adult(s) Only", "Adult(s) and Minor(s)"]}
-                        onChange={(value) => {
-                          participationTypeInput.onChange(value);
-                          if (value === "Adult(s) Only") {
-                            minorCountInput.onChange("0");
-                          }
-                        }}
-                      />
+                  <Flx column sx={{ mt: 4 }} gap={1}>
+                    <Htag h2>Participation Details</Htag>
+                    <TitledCard
+                    //  title={"Participation Details"}
+                    >
+                      <Flx column gap={4}>
+                        <RffSelectToggleField
+                          name="participationType"
+                          required
+                          label="Who is participating?"
+                          options={["Adult(s) Only", "Adult(s) and Minor(s)"]}
+                          onChange={(value) => {
+                            participationTypeInput.onChange(value);
+                            if (value === "Adult(s) Only") {
+                              minorCountInput.onChange("0");
+                            }
+                          }}
+                        />
 
-                      <ParticipantCountSelector
-                        participationType={participationTypeInput.value}
-                        adultCount={adultCountInput.value}
-                        minorCount={minorCountInput.value}
-                        onAdultCountChange={adultCountInput.onChange}
-                        onMinorCountChange={minorCountInput.onChange}
-                      />
-                    </Flx>
-                  </TitledCard>
+                        <ParticipantCountSelector
+                          participationType={participationTypeInput.value}
+                          adultCount={adultCountInput.value}
+                          minorCount={minorCountInput.value}
+                          onAdultCountChange={adultCountInput.onChange}
+                          onMinorCountChange={minorCountInput.onChange}
+                        />
+                      </Flx>
+                    </TitledCard>
+                  </Flx>
+
                   <Flx column gap={2} sx={{ mt: 4 }}>
                     <AdultSections
                       count={parseInt(adultCountInput.value || 0)}
@@ -557,6 +597,7 @@ const AdultSections = ({ count }) => {
   for (let i = 0; i < count; i++) {
     sections.push(
       <TitledCard
+        variant="h3"
         icon={<Person2Rounded className="thin" />}
         key={`adult-${i}`}
         title={`Adult ${i + 1}`}
@@ -638,6 +679,7 @@ const MinorSections = ({ count, adultCount }) => {
       <FormSpy key={`minor-${i}`} subscription={{ values: true }}>
         {({ values }) => (
           <TitledCard
+            variant="h3"
             icon={<EscalatorWarningOutlined className="thin" />}
             title={`Minor ${i + 1}`}
             cardSx={{ borderLeft: `8px solid ${amber[100]}` }}
