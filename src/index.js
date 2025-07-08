@@ -10,8 +10,6 @@ import { Provider } from "react-redux";
 // === Stytch B2B imports ===
 
 // Your own modules
-import AuthenticatedDashboard from "./AuthenticatedDashboard";
-import ProtectedRoute from "./authentication/ProtectedRoute";
 import generateMuiThemeDefaults from "./functions/generateMuiThemeDefaults";
 import "./index.css";
 import rootReducer from "./redux/reducers";
@@ -19,7 +17,6 @@ import rootReducer from "./redux/reducers";
 // AG Grid
 import { LicenseManager } from "ag-grid-enterprise";
 import Authenticate from "./authentication/Authenticate";
-import LoginScreen from "./screens/LoginScreen";
 import WaiverFormScreen from "./screens/WaiverFormScreen";
 import WaiverSearchScreen from "./screens/WaiverSearchScreen";
 LicenseManager.setLicenseKey(process.env.REACT_APP_AG_GRID_ENTERPRISE_KEY);
@@ -47,7 +44,7 @@ root.render(
           <Routes>
             <Route path="/" element={<WaiverFormScreen />} />
             <Route path="/waiver/*" element={<WaiverFormScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
+            {/* <Route path="/login" element={<LoginScreen />} /> */}
             <Route path="/authenticate" element={<Authenticate />} />
             <Route path="/waivers" element={<WaiverSearchScreen />} />
 
