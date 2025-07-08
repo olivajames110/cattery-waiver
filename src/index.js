@@ -48,20 +48,8 @@ root.render(
             <Route path="/authenticate" element={<Authenticate />} />
             <Route path="/waivers" element={<WaiverSearchScreen />} />
 
-            {/* Protected Routes */}
-            {/* <Route
-              path="/waivers"
-              element={
-                <ProtectedRoute>
-                  <AuthenticatedDashboard>
-                    <WaiverSearchScreen />
-                  </AuthenticatedDashboard>
-                </ProtectedRoute>
-              }
-            /> */}
-
             {/* Catch all route */}
-            {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ThemeProvider>
       </SnackbarProvider>
