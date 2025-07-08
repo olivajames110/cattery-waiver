@@ -45,29 +45,26 @@ root.render(
       <SnackbarProvider maxSnack={5}>
         <ThemeProvider theme={generateMuiThemeDefaults({ primaryColor })}>
           <Routes>
-            <Route path="/*" element={<WaiverFormScreen />} />
+            <Route path="/" element={<WaiverFormScreen />} />
             <Route path="/waiver/*" element={<WaiverFormScreen />} />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/waivers" element={<WaiverSearchScreen />} />
             <Route path="/authenticate" element={<Authenticate />} />
+            <Route path="/waivers" element={<WaiverSearchScreen />} />
 
-            {/* Private/Protected Routes */}
-            <Route
-              path="/*"
+            {/* Protected Routes */}
+            {/* <Route
+              path="/waivers"
               element={
                 <ProtectedRoute>
                   <AuthenticatedDashboard>
-                    <Routes>
-                      <Route
-                        path={"/waivers"}
-                        element={<WaiverSearchScreen />}
-                      />
-                      <Route path="*" element={<Navigate to="/waiver" />} />
-                    </Routes>
+                    <WaiverSearchScreen />
                   </AuthenticatedDashboard>
                 </ProtectedRoute>
               }
-            />
+            /> */}
+
+            {/* Catch all route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ThemeProvider>
       </SnackbarProvider>
